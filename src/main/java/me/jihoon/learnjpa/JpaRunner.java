@@ -8,6 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.net.SocketOption;
 
 @Component
 @Transactional
@@ -18,18 +19,31 @@ public class JpaRunner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        Account account = new Account();
-        account.setUsername("jihoon");
-        account.setPassword("jh");
-
-        Study study = new Study();
-        study.setName("Spring Data JPA");
-
-        account.addStudy(study);
-
+//        Post post = new Post();
+//        post.setTitle("Spring Data JPA 언제 보나..");
+//
+//        Comment comment = new Comment();
+//        comment.setComment("빨리 보고 싶어요.");
+//        post.addComment(comment);
+//
+//        Comment comment1 = new Comment();
+//        comment1.setComment("곧 보여드릴께요.");
+//        post.addComment(comment1);
 
         Session session = entityManager.unwrap(Session.class);
-        session.save(account);
-        session.save(study);
+
+//        session.save(post);
+        Post post = session.get(Post.class, 4L);
+//        Comment comment = session.get(Comment.class,5L);
+        System.out.println("========================");
+//        System.out.println(comment.getComment());
+//        System.out.println(comment.getPost().getTitle());
+        System.out.println(post.getTitle());
+
+        post.getComments().forEach(c -> {
+            System.out.println("------------------");
+            System.out.println(c.getComment());
+        });
+//        session.delete(post);
     }
 }
